@@ -38,12 +38,12 @@ Keep the UI simple — we are not evaluating design skills.
 
 ⸻
 
-3. Locations Tab
+3. Character Tab
 
 Fetch from:
 
 ```
-GET https://rickandmortyapi.com/api/location
+GET https://rickandmortyapi.com/api/character
 ```
 
 Display a simple card per character showing:
