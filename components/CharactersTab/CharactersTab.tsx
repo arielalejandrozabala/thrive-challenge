@@ -1,16 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { Character, ApiResponse } from "@/types/api";
+import { Character } from "@/types/api";
 import { CharacterCard } from "@/components/CharacterCard/CharacterCard";
 import { Grid, LoadingContainer, ErrorContainer } from "@/components/Grid/Grid.styles";
-
-const fetchCharacters = async (): Promise<Character[]> => {
-  const response = await fetch("https://rickandmortyapi.com/api/character");
-  if (!response.ok) {
-    throw new Error("Failed to fetch characters");
-  }
-  const data: ApiResponse<Character> = await response.json();
-  return data.results;
-};
+import { api } from "@/services/api";
 
 interface CharactersTabProps {
   isVisible: boolean;
@@ -19,7 +11,7 @@ interface CharactersTabProps {
 export const CharactersTab = ({ isVisible }: CharactersTabProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["characters"],
-    queryFn: fetchCharacters,
+    queryFn: api.characters.getAll,
     enabled: isVisible,
   });
 
