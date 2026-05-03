@@ -27,14 +27,22 @@ export default function Home() {
     <PageContainer>
       <Title>Rick and Morty Explorer</Title>
       <TabsContainer>
-        <TabList>
+        <TabList role="tablist" aria-label="Content sections">
           <TabButton
+            id="tab-characters"
+            role="tab"
+            aria-selected={activeTab === "characters"}
+            aria-controls="panel-characters"
             $active={activeTab === "characters"}
             onClick={() => setActiveTab("characters")}
           >
             Characters
           </TabButton>
           <TabButton
+            id="tab-locations"
+            role="tab"
+            aria-selected={activeTab === "locations"}
+            aria-controls="panel-locations"
             $active={activeTab === "locations"}
             onClick={() => setActiveTab("locations")}
           >
@@ -42,11 +50,21 @@ export default function Home() {
           </TabButton>
         </TabList>
 
-        <TabPanel $visible={activeTab === "characters"}>
+        <TabPanel
+          id="panel-characters"
+          role="tabpanel"
+          aria-labelledby="tab-characters"
+          $visible={activeTab === "characters"}
+        >
           <CharactersTab isVisible={activeTab === "characters"} />
         </TabPanel>
 
-        <TabPanel $visible={activeTab === "locations"}>
+        <TabPanel
+          id="panel-locations"
+          role="tabpanel"
+          aria-labelledby="tab-locations"
+          $visible={activeTab === "locations"}
+        >
           <LocationsTab isVisible={activeTab === "locations"} />
         </TabPanel>
       </TabsContainer>

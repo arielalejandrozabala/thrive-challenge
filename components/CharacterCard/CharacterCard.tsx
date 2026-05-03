@@ -17,7 +17,10 @@ interface CharacterCardProps {
 export const CharacterCard = ({ character }: CharacterCardProps) => {
   return (
     <Card>
-      <CardImage src={character.image} alt={character.name} />
+      <CardImage 
+        src={character.image} 
+        alt={`${character.name}, ${character.species}`}
+      />
       <CardContent>
         <CardTitle>{character.name}</CardTitle>
         <CardInfo>
