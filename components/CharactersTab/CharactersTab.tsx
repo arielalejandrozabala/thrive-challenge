@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Character } from "@/types/api";
 import { CharacterCard } from "@/components/CharacterCard/CharacterCard";
 import { Grid, LoadingContainer, ErrorContainer } from "@/components/Grid/Grid.styles";
-import { api } from "@/services/api";
+import { api, ApiError } from "@/services/api";
 
 interface CharactersTabProps {
   isVisible: boolean;
@@ -20,11 +20,12 @@ export const CharactersTab = ({ isVisible }: CharactersTabProps) => {
   }
 
   if (error) {
-    return (
-      <ErrorContainer>
-        Error loading characters: {(error as Error).message}
-      </ErrorContainer>
-    );
+    // Show friendly message to user
+    const errorMessage = error instanceof ApiError 
+      ? error.message 
+      : "Oops, algo salió mal. Por favor intenta de nuevo.";
+    
+    return <ErrorContainer>{errorMessage}</ErrorContainer>;
   }
 
   if (!data) {

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Location } from "@/types/api";
 import { LocationCard } from "@/components/LocationCard/LocationCard";
 import { Grid, LoadingContainer, ErrorContainer } from "@/components/Grid/Grid.styles";
-import { api } from "@/services/api";
+import { api, ApiError } from "@/services/api";
 
 interface LocationsTabProps {
   isVisible: boolean;
@@ -20,11 +20,12 @@ export const LocationsTab = ({ isVisible }: LocationsTabProps) => {
   }
 
   if (error) {
-    return (
-      <ErrorContainer>
-        Error loading locations: {(error as Error).message}
-      </ErrorContainer>
-    );
+    // Show friendly message to user
+    const errorMessage = error instanceof ApiError 
+      ? error.message 
+      : "Oops, algo salió mal. Por favor intenta de nuevo.";
+    
+    return <ErrorContainer>{errorMessage}</ErrorContainer>;
   }
 
   if (!data) {
