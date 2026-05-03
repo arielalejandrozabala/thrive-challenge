@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Character } from "@/types/api";
-import { CharacterCard } from "@/components/CharacterCard/CharacterCard";
+import { CharacterCard } from "@/components/CharacterCard";
 import { Grid, LoadingContainer, ErrorContainer } from "@/components/Grid/Grid.styles";
 import { api, ApiError } from "@/services/api";
 import { LOADING_MESSAGES, ERROR_MESSAGES, EMPTY_MESSAGES } from "@/constants/messages";

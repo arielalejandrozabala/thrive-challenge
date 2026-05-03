@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { CharactersTab } from "@/components/CharactersTab/CharactersTab";
-import { LocationsTab } from "@/components/LocationsTab/LocationsTab";
+import { CharactersTab } from "@/components/CharactersTab";
+import { LocationsTab } from "@/components/LocationsTab";
 import { TabsContainer, TabList, TabButton, TabPanel } from "@/components/Tabs/Tabs.styles";
 
 const PageContainer = styled.div`
