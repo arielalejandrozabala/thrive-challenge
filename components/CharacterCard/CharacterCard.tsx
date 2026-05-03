@@ -9,6 +9,7 @@ import {
   InfoLabel,
   StatusBadge,
 } from "./CharacterCard.styles";
+import { UI_LABELS } from "@/constants/messages";
 
 interface CharacterCardProps {
   character: Character;
@@ -25,13 +26,13 @@ export const CharacterCard = ({ character }: CharacterCardProps) => {
         <CardTitle>{character.name}</CardTitle>
         <CardInfo>
           <InfoRow>
-            <InfoLabel>Status:</InfoLabel>
+            <InfoLabel>{UI_LABELS.status}</InfoLabel>
             <StatusBadge $status={character.status}>
               {character.status}
             </StatusBadge>
           </InfoRow>
           <InfoRow>
-            <InfoLabel>Species:</InfoLabel>
+            <InfoLabel>{UI_LABELS.species}</InfoLabel>
             <span>{character.species}</span>
           </InfoRow>
         </CardInfo>

@@ -3,6 +3,7 @@ import { Character } from "@/types/api";
 import { CharacterCard } from "@/components/CharacterCard/CharacterCard";
 import { Grid, LoadingContainer, ErrorContainer } from "@/components/Grid/Grid.styles";
 import { api, ApiError } from "@/services/api";
+import { LOADING_MESSAGES, ERROR_MESSAGES, EMPTY_MESSAGES } from "@/constants/messages";
 
 interface CharactersTabProps {
   isVisible: boolean;
@@ -16,20 +17,19 @@ export const CharactersTab = ({ isVisible }: CharactersTabProps) => {
   });
 
   if (isLoading) {
-    return <LoadingContainer>Loading characters...</LoadingContainer>;
+    return <LoadingContainer>{LOADING_MESSAGES.characters}</LoadingContainer>;
   }
 
   if (error) {
-    // Show friendly message to user
     const errorMessage = error instanceof ApiError 
       ? error.message 
-      : "Oops, algo salió mal. Por favor intenta de nuevo.";
+      : ERROR_MESSAGES.generic;
     
     return <ErrorContainer>{errorMessage}</ErrorContainer>;
   }
 
-  if (!data) {
-    return null;
+  if (!data || data.length === 0) {
+    return <ErrorContainer>{EMPTY_MESSAGES.characters}</ErrorContainer>;
   }
 
   return (

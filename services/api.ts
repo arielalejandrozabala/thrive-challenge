@@ -1,5 +1,6 @@
 import { Character, Location, ApiResponse } from "@/types/api";
 import { logger } from "./logger";
+import { ERROR_MESSAGES } from "@/constants/messages";
 
 const BASE_URL = "https://rickandmortyapi.com/api";
 
@@ -23,18 +24,18 @@ async function fetchFromAPI<T>(endpoint: string): Promise<T[]> {
     if (!response.ok) {
       // Specific errors by status code
       const statusCode = response.status;
-      let message = "Oops, algo salió mal. Por favor intenta de nuevo.";
+      let message: string = ERROR_MESSAGES.generic;
       
       // Log for developers with full context
       logger.apiError(endpoint, statusCode);
 
       // Specific messages for particular cases
       if (statusCode === 404) {
-        message = "No pudimos encontrar lo que buscabas.";
+        message = ERROR_MESSAGES.notFound;
       } else if (statusCode >= 500) {
-        message = "Nuestro servidor está teniendo problemas. Intenta más tarde.";
+        message = ERROR_MESSAGES.serverError;
       } else if (statusCode === 429) {
-        message = "Demasiadas solicitudes. Espera un momento e intenta de nuevo.";
+        message = ERROR_MESSAGES.tooManyRequests;
       }
 
       throw new ApiError(message, statusCode, endpoint);
@@ -63,7 +64,7 @@ async function fetchFromAPI<T>(endpoint: string): Promise<T[]> {
 
     // For users: friendly generic message
     throw new ApiError(
-      "No pudimos conectarnos. Verifica tu conexión a internet.",
+      ERROR_MESSAGES.networkError,
       undefined,
       endpoint,
       error
