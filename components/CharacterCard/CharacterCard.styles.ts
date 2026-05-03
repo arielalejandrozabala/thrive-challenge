@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CharacterStatus } from "@/types/api";
 
 export const Card = styled.div`
   background: white;
@@ -49,29 +50,29 @@ export const InfoLabel = styled.span`
   color: #333;
 `;
 
-export const StatusBadge = styled.span<{ $status: string }>`
+export const StatusBadge = styled.span<{ $status: CharacterStatus }>`
   display: inline-block;
   padding: 2px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 600;
   background: ${(props) => {
-    switch (props.$status.toLowerCase()) {
-      case "alive":
+    switch (props.$status) {
+      case "Alive":
         return "#d4edda";
-      case "dead":
+      case "Dead":
         return "#f8d7da";
-      default:
+      case "unknown":
         return "#d1ecf1";
     }
   }};
   color: ${(props) => {
-    switch (props.$status.toLowerCase()) {
-      case "alive":
+    switch (props.$status) {
+      case "Alive":
         return "#155724";
-      case "dead":
+      case "Dead":
         return "#721c24";
-      default:
+      case "unknown":
         return "#0c5460";
     }
   }};
