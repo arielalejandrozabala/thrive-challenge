@@ -182,10 +182,11 @@ Clarity of thinking is more important than completeness.
 - **Performance**: 
   - Virtualization for large lists (react-window)
   - Image optimization (Next.js Image component)
-  - Code splitting for tabs
+  - Code splitting for tabs (if adding 10+ tabs with heavy dependencies)
 - **Monitoring**: DataDog/New Relic for performance metrics
 - **API Caching**: Server-side caching (Next.js ISR/API routes) to reduce external API calls
 - **Error Handling**: Retry logic and fallbacks for external API failures
+- **State Management**: Consider Zustand/Redux if state complexity grows beyond React Query
 
 **If Team Grows** (multiple developers):
 - **Storybook**: Component documentation and visual testing
