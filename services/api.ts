@@ -1,6 +1,7 @@
 import { Character, Location, ApiResponse } from "@/types/api";
 import { logger } from "./logger";
 import { ERROR_MESSAGES } from "@/constants/messages";
+import axios, { AxiosError } from "axios";
 
 const BASE_URL = "https://rickandmortyapi.com/api";
 
@@ -19,11 +20,20 @@ export class ApiError extends Error {
 
 async function fetchFromAPI<T>(endpoint: string): Promise<T[]> {
   try {
-    const response = await fetch(`${BASE_URL}${endpoint}`);
+    const response = await axios.get<ApiResponse<T>>(`${BASE_URL}${endpoint}`);
     
-    if (!response.ok) {
-      // Specific errors by status code
-      const statusCode = response.status;
+    // Log successful requests in development
+    logger.info(`API Success: ${endpoint}`, {
+      resultsCount: response.data.results.length,
+    });
+    
+    return response.data.results;
+    
+  } catch (error) {
+    // Handle Axios errors
+    if (axios.isAxiosError(error)) {
+      const axiosError = error as AxiosError;
+      const statusCode = axiosError.response?.status;
       let message: string = ERROR_MESSAGES.generic;
       
       // Log for developers with full context
@@ -32,39 +42,26 @@ async function fetchFromAPI<T>(endpoint: string): Promise<T[]> {
       // Specific messages for particular cases
       if (statusCode === 404) {
         message = ERROR_MESSAGES.notFound;
-      } else if (statusCode >= 500) {
+      } else if (statusCode && statusCode >= 500) {
         message = ERROR_MESSAGES.serverError;
       } else if (statusCode === 429) {
         message = ERROR_MESSAGES.tooManyRequests;
+      } else if (!axiosError.response) {
+        // Network error (no response from server)
+        message = ERROR_MESSAGES.networkError;
       }
 
-      throw new ApiError(message, statusCode, endpoint);
+      throw new ApiError(message, statusCode, endpoint, error);
     }
 
-    const data: ApiResponse<T> = await response.json();
-    
-    // Log successful requests in development
-    logger.info(`API Success: ${endpoint}`, {
-      resultsCount: data.results.length,
-    });
-    
-    return data.results;
-    
-  } catch (error) {
-    // Network errors (no connection, timeout, etc.)
-    if (error instanceof ApiError) {
-      throw error; // Re-throw API errors
-    }
-
-    // Log network errors
-    logger.error("Network Error", {
+    // Handle non-Axios errors
+    logger.error("Unexpected Error", {
       endpoint,
       error: error instanceof Error ? error.message : String(error),
     });
 
-    // For users: friendly generic message
     throw new ApiError(
-      ERROR_MESSAGES.networkError,
+      ERROR_MESSAGES.generic,
       undefined,
       endpoint,
       error
