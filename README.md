@@ -1,5 +1,11 @@
 Practical Exercise – Dashboard Tabs with React Query
 
+## 🚀 Live Demo
+
+**[View Live Demo →](https://thrive-challenge-az.vercel.app/)**
+
+---
+
 🧩 Goal
 
 Build a small Next.js page that contains:
