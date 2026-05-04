@@ -1,11 +1,12 @@
 type LogLevel = "info" | "warn" | "error";
 
-interface LogData {
-  timestamp: string;
-  level: LogLevel;
-  message: string;
-  [key: string]: unknown;
-}
+// Uncomment when integrating with backend/analytics
+// interface LogData {
+//   timestamp: string;
+//   level: LogLevel;
+//   message: string;
+//   [key: string]: unknown;
+// }
 
 class Logger {
   private isDev = process.env.NODE_ENV === "development";
@@ -13,14 +14,6 @@ class Logger {
   private log(level: LogLevel, message: string, data?: Record<string, unknown>) {
     // In production, don't log info (only warn and error)
     if (!this.isDev && level === "info") return;
-
-    const timestamp = new Date().toISOString();
-    const logData: LogData = {
-      timestamp,
-      level,
-      message,
-      ...data,
-    };
 
     if (this.isDev) {
       // In development: console with colors
@@ -46,6 +39,9 @@ class Logger {
     }
 
     // Optional: Send to your backend/analytics
+    // Uncomment and implement when needed:
+    // const timestamp = new Date().toISOString();
+    // const logData: LogData = { timestamp, level, message, ...data };
     // this.sendToBackend(logData);
   }
 
